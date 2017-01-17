@@ -37,7 +37,7 @@ def simple_rnn(agent, env, dropout=0, h0_width=8, h1_width=8, **args):
     h = Dropout(dropout)(h)
     V = Dense(env.action_space.n, activation='linear',init='zero')(h)
     model = Model(S,V)
-    return model
+    return state, model
 
 def simple_cnn(agent, env, dropout=0, learning_rate=1e-3, **args):
   with tf.device("/cpu:0"):
