@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import threading, Queue
+import threading, queue
 import numpy as np
 import copy
 
@@ -7,7 +7,7 @@ class global_params(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.weights = None
-        self.update_queue = Queue.Queue()
+        self.update_queue = queue.Queue()
         self.weight_lock = threading.Lock()
         self.finished = False
 
@@ -31,7 +31,7 @@ class global_params(threading.Thread):
             if True:
                 u = self.update_queue.get(block=True)
                 #u = self.update_queue.get(block=True, timeout=1.0)
-                print "GP: Do Update "
+                print("GP: Do Update ")
 
                 self.weight_lock.acquire()
                 holding = True

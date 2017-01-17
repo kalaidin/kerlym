@@ -1,8 +1,8 @@
 """ Trains an agent with (stochastic) Policy Gradients on Pong. Uses OpenAI Gym. """
 import numpy as np
-import cPickle as pickle
-import gym,keras
-import preproc, networks, statbin
+import pickle
+import gym, keras
+from kerlym import preproc, networks, statbin
 import matplotlib.pyplot as plt
 
 # This policy gradient implementation is an adaptation of Karpathy's GIST
@@ -40,7 +40,7 @@ class PG:
 
         # Make NN model
         self.model = modelfactory(self, env=self.env, dropout=dropout, **kwargs)
-        print self.model.summary()
+        print(self.model.summary())
 
         # testing
         if self.resume:
@@ -137,7 +137,7 @@ class PG:
             # boring book-keeping
             running_reward = reward_sum if running_reward is None else running_reward * 0.99 + reward_sum * 0.01
             rewards.add(reward_sum)
-            print 'resetting env. episode reward total was %f. running mean: %f' % (reward_sum, running_reward)
+            print('resetting env. episode reward total was %f. running mean: %f' % (reward_sum, running_reward))
             if episode_number % 100 == 0:
                 self.save()
             reward_sum = 0

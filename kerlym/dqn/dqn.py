@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-import networks
+from kerlym.dqn import networks
 from gym import envs
 import tensorflow as tf
 import keras.backend as K
 import numpy as np
-from worker import *
+from kerlym.dqn.worker import *
 from kerlym import preproc
 from kerlym.statbin import statbin
 import matplotlib.pyplot as plt
-import Queue
+import queue
 
 class DQN:
     def __init__(self, experiment="Breakout-v0", env=None, nthreads=16, nframes=1, epsilon=0.5, 
@@ -23,7 +23,7 @@ class DQN:
         if env==None:
             env=lambda: envs.make(self.experiment)
         self.nthreads = nthreads
-        self.env = map(lambda x: env(), range(0, self.nthreads))
+        self.env = list(map(lambda x: env(), range(0, self.nthreads)))
         self.model_factory = modelfactory
         self.nframes = nframes
         self.learning_rate = learning_rate
@@ -48,17 +48,17 @@ class DQN:
 
         self.render_rate_hz = 5.0
         self.render_ngames = 2
-        self.plot_q = Queue.Queue()
+        self.plot_q = queue.Queue()
 
         # set up output shape to be either pre-processed or not
         if not self.preprocessor == None:
-            print self.env[0].observation_space.shape
-            o = self.preprocessor(np.zeros( self.env[0].observation_space.shape ) )
+            print(self.env[0].observation_space.shape)
+            o = self.preprocessor(np.zeros(self.env[0].observation_space.shape ) )
             self.input_dim_orig = [self.nframes]+list(o.shape)
         else:
             self.input_dim_orig = [self.nframes]+list(self.env[0].observation_space.shape)
         self.input_dim = np.product( self.input_dim_orig )
-        print self.input_dim, self.input_dim_orig
+        print(self.input_dim, self.input_dim_orig)
 
         # set up plotting storage
         self.stats = None
@@ -113,10 +113,12 @@ class DQN:
 
 
     def train(self):
+        print("init all")
         # Initialize target network weights
-        self.session.run(self.graph_ops["reset_target_network_params"])
         self.session.run(tf.initialize_all_variables())
-        threads = map(lambda tid: dqn_learner(self, tid), range(0,self.nthreads))
+        self.session.run(self.graph_ops["reset_target_network_params"])
+
+        threads = list(map(lambda tid: dqn_learner(self, tid), range(0,self.nthreads)))
         # start actor-learners
         for t in threads:
             t.start()
@@ -131,7 +133,7 @@ class DQN:
             self.pt = plotter_thread(self)
             self.pt.start()
 
-        print "Waiting for threads to finish..."
+        print("Waiting for threads to finish...")
         for t in threads:
             t.join()
 

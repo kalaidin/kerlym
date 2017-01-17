@@ -1,16 +1,16 @@
 #!/usr/bin/env python
-import networks
+from kerlym.a3c import networks
 from gym import envs
 import tensorflow as tf
 import keras.backend as K
 import keras
 import numpy as np
-from worker import *
+from kerlym.a3c.worker import *
 from kerlym import preproc
 from kerlym.statbin import statbin
 import matplotlib.pyplot as plt
-import Queue
-import global_params
+import queue
+from kerlym.a3c import global_params
 
 class A3C:
     def __init__(self, experiment="Breakout-v0", env=None, nthreads=16, nframes=1, epsilon=0.5,
@@ -51,17 +51,17 @@ class A3C:
 
         self.render_rate_hz = 5.0
         self.render_ngames = 2
-        self.plot_q = Queue.Queue()
+        self.plot_q = queue.Queue()
 
         # set up output shape to be either pre-processed or not
         if not self.preprocessor == None:
-            print self.env[0].observation_space.shape
+            print(self.env[0].observation_space.shape)
             o = self.preprocessor(np.zeros( self.env[0].observation_space.shape ) )
             self.input_dim_orig = [self.nframes]+list(o.shape)
         else:
             self.input_dim_orig = [self.nframes]+list(self.env[0].observation_space.shape)
         self.input_dim = np.product( self.input_dim_orig )
-        print self.input_dim, self.input_dim_orig
+        print(self.input_dim, self.input_dim_orig)
 
         # set up plotting storage
         self.stats = None
@@ -160,7 +160,7 @@ class A3C:
             self.pt = plotter_thread(self)
             self.pt.start()
 
-        print "Waiting for threads to finish..."
+        print("Waiting for threads to finish...")
         for t in threads:
             t.join()
 

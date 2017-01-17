@@ -41,7 +41,7 @@ class a3c_learner(threading.Thread):
             # reset local weights to target weights
             w = self.parent.global_params.get_weights()
             if not w == None:
-                print "Update local params from global... "
+                print("Update local params from global... ")
                 w_p,w_v = w
                 #ops["set_w_p"](w_p)
                 #ops["set_w_v"](w_v)
@@ -142,7 +142,7 @@ class a3c_learner(threading.Thread):
             # Save model progress
             if n_ep % self.parent.checkpoint_interval == 0 and self.tid == 0:
                 fp = self.parent.checkpoint_dir+"/checkpoint_"+self.parent.experiment+".ckpt"
-                print "Writing checkpoint: ", fp
+                print("Writing checkpoint: ", fp)
                 self.parent.saver.save(self.parent.session, fp, global_step = t)
 
             # Print end of episode stats
@@ -154,7 +154,7 @@ class a3c_learner(threading.Thread):
                 'cost':np.mean(episode_ave_cost)
                 }
             self.parent.update_stats_threadsafe(stats, self.tid)
-            print "THREAD:", self.tid, "/ TIME", self.parent.T, "/ TIMESTEP", t, "/ REWARD", ep_reward, "/ POLICY_MIN-MAX (%.4f, %.4f)" % (episode_ave_min_q/float(ep_t), episode_ave_max_q/float(ep_t))
+            print("THREAD:", self.tid, "/ TIME", self.parent.T, "/ TIMESTEP", t, "/ REWARD", ep_reward, "/ POLICY_MIN-MAX (%.4f, %.4f)" % (episode_ave_min_q/float(ep_t), episode_ave_max_q/float(ep_t)))
 
 
 class render_thread(threading.Thread):

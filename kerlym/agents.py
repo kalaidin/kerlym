@@ -1,3 +1,3 @@
-from pg import *
-from dqn.dqn import *
-from a3c.a3c import *
+from kerlym.pg import *
+from kerlym.dqn.dqn import *
+from kerlym.a3c.a3c import *

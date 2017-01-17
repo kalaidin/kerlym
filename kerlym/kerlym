@@ -27,7 +27,7 @@ parser.add_option("-R", "--render", dest="render", action='store_true', default=
 parser.add_option("-c", "--concurrency", dest="nthreads", type='int', default=1,  help="Number of Worker Threads [%default]")
 (options, args) = parser.parse_args()
 
-print options.agent
+print(options.agent)
 
 training_dir = tempfile.mkdtemp()
 logging.getLogger().setLevel(logging.DEBUG)
@@ -52,8 +52,8 @@ elif(options.agent=="pg"):
     net = eval("networks.%s"%(options.net))
 assert(not net == None)
 
-print net
-print options.epsilon_decay
+print(net)
+print(options.epsilon_decay)
 
 agent = agent_constructor(
                     experiment=options.env,

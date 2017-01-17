@@ -1,5 +1,5 @@
 kerlym --env Pong-v0 \
-       --net simple_cnn \
+       --net simple_dnn \
        --agent dqn \
        --epsilon 1.0 \
        --epsilon_decay 1e-8 \

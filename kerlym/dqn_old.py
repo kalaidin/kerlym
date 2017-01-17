@@ -1,5 +1,5 @@
-import logging,os,cPickle,time
-from statbin import statbin
+import logging,os, pickle,time
+from kerlym.statbin import statbin
 from random import choice, random, sample
 import numpy as np
 
@@ -39,8 +39,8 @@ class D2QN:
             self.input_dim_orig = [nframes]+list(env.observation_space.shape)
         self.input_dim = np.product( self.input_dim_orig )
 
-        print "Input Dim: ", self.input_dim, self.input_dim_orig
-        print "Output Actions: ", self.actions
+        print("Input Dim: ", self.input_dim, self.input_dim_orig)
+        print("Output Actions: ", self.actions)
 
         self.old_state_m1 = None
         self.action_m1 = None
@@ -52,7 +52,7 @@ class D2QN:
         self.models = map(lambda x: modelfactory(self, env=env, dropout=dropout, **kwargs), [0,1])
         self.stats = None
 
-        print self.models[0].summary()
+        print(self.models[0].summary())
 
 
     def act( self, state=None, pstate=None, paction=None, preward=None):
@@ -234,7 +234,7 @@ class D2QN:
                 total_reward += reward
                 i += 1
 
-            print " * Episode %08d\tFrame %08d\tSamples: %08d\tTerminal: %08d\tReward: %d\tEpsilon: %f"%(e, t, len(self.observations), self.nterminal, total_reward, self.epsilon)
+            print(" * Episode %08d\tFrame %08d\tSamples: %08d\tTerminal: %08d\tReward: %d\tEpsilon: %f"%(e, t, len(self.observations), self.nterminal, total_reward, self.epsilon))
             if not self.epsilon_schedule == None:
                 self.epsilon = self.epsilon_schedule(e, self.epsilon)
 

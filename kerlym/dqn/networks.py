@@ -43,10 +43,10 @@ def simple_cnn(agent, env, dropout=0, learning_rate=1e-3, **args):
   with tf.device("/cpu:0"):
     state = tf.placeholder('float', [None, agent.input_dim])
     S = Input(shape=[agent.input_dim])
-    h = Reshape( agent.input_dim_orig )(S)
-    h = TimeDistributed( Convolution2D(16, 8, 8, subsample=(4, 4), border_mode='same', activation='relu', dim_ordering='tf'))(h)
+    h = Reshape(agent.input_dim_orig )(S)
+    h = TimeDistributed(Convolution2D(16, 8, 8, subsample=(4, 4), border_mode='same', activation='relu', dim_ordering='tf'))(h)
 #    h = Dropout(dropout)(h)
-    h = TimeDistributed( Convolution2D(32, 4, 4, subsample=(2, 2), border_mode='same', activation='relu', dim_ordering='tf'))(h)
+    h = TimeDistributed(Convolution2D(32, 4, 4, subsample=(2, 2), border_mode='same', activation='relu', dim_ordering='tf'))(h)
     h = Flatten()(h)
 #    h = Dropout(dropout)(h)
     h = Dense(256, activation='relu')(h)
@@ -56,5 +56,3 @@ def simple_cnn(agent, env, dropout=0, learning_rate=1e-3, **args):
     model = Model(S, V)
     model.compile(loss='mse', optimizer=RMSprop(lr=learning_rate) )
     return state, model
-
-

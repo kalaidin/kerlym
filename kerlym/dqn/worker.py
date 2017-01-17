@@ -43,7 +43,7 @@ class dqn_learner(threading.Thread):
                     action_index = np.argmax(readout_t)
                 a_t[action_index] = 1
 
-                # Gym excecutes action in game environment on behalf of actor-learner
+                # Gym executes action in game environment on behalf of actor-learner
                 s_t1_single, r_t, terminal, info = self.env.step(action_index)
                 s_t1_single = self.parent.prepare_obs(s_t1_single)
                 s_t1 = self.parent.diff_obs(s_t1_single, s_t_single)
@@ -96,7 +96,7 @@ class dqn_learner(threading.Thread):
                 # Save model progress
                 if t % self.parent.checkpoint_interval == 0 and self.tid == 0:
                     fp = self.parent.checkpoint_dir+"/checkpoint_"+self.parent.experiment+".ckpt"
-                    print "Writing checkpoint: ", fp
+                    print("Writing checkpoint: ", fp)
                     self.parent.saver.save(self.parent.session, fp, global_step = t)
 
                 # Print end of episode stats
@@ -109,7 +109,7 @@ class dqn_learner(threading.Thread):
                         'cost':np.mean(episode_ave_cost)
                         }
                     self.parent.update_stats_threadsafe(stats, self.tid)
-                    print "THREAD:", self.tid, "/ TIME", self.parent.T, "/ TIMESTEP", t, "/ EPSILON", self.parent.epsilon, "/ REWARD", ep_reward, "/ Q_MAX %.4f" % (episode_ave_max_q/float(ep_t))
+                    print("THREAD:", self.tid, "/ TIME", self.parent.T, "/ TIMESTEP", t, "/ EPSILON", self.parent.epsilon, "/ REWARD", ep_reward, "/ Q_MAX %.4f" % (episode_ave_max_q/float(ep_t)))
                     break
 
 
